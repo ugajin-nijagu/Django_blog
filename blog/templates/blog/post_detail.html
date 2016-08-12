@@ -5,22 +5,24 @@
     <h1>{{ post.title }}</h1>
 
     {% if user.is_authenticated %}
-    <p>
-      <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-    </p>
-    {% endif %}
-
-    {% if post.published_date %}
-    <div class='date'>
-      <p>{{ post.published_date }}</p>
-    </div>
+      <p>
+      <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+      {% if post.published_date %}
+      <div class='date'>
+        <p>{{ post.published_date }}</p>
+      </div>
+      {% else %}
+      <a class="btn btn-default" href="{% url 'blog.views.post_publish' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span> Publish</a>
+      <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+      </p>
+      {% endif %}
     {% endif %}
     <p>{{ post.text|linebreaksbr }}</p>
   </div>
 
   <hr>
   <div class='comment'>
-    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+    <a class="btn btn-default btn-md" href="{% url 'add_comment_to_post' pk=post.pk %}"> <span class="glyphicon glyphicon-pencil"></span> Add comment</a>
   </div>
   {% for comment in post.comments.all %}
     {% if user.is_authenticated or comment.approved_comment %}
