@@ -12,6 +12,9 @@
     <div class="date">
       <p>published: {{ post.published_date }}</p>
     </div>
+    <a href="{% url 'blog.views.post_detail' pk=post.pk %}">Total comments: {{ post.comments.count }}</a>
+    </br>
+    <a href="{% url 'blog.views.post_detail' pk=post.pk %}">Comments approved: {{ post.approved_comments.count }}</a>
   </div>
   {% endfor %}
 {% endblock %}

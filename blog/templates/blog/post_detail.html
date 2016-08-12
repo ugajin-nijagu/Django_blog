@@ -3,6 +3,13 @@
 {% block content %}
   <div class='post'>
     <h1>{{ post.title }}</h1>
+
+    {% if user.is_authenticated %}
+    <p>
+      <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </p>
+    {% endif %}
+
     {% if post.published_date %}
     <div class='date'>
       <p>{{ post.published_date }}</p>
@@ -10,4 +17,27 @@
     {% endif %}
     <p>{{ post.text|linebreaksbr }}</p>
   </div>
+
+  <hr>
+  <div class='comment'>
+    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+  </div>
+  {% for comment in post.comments.all %}
+    {% if user.is_authenticated or comment.approved_comment %}
+    <div class="comment">
+      <strong>{{ comment.author }}</strong>
+      <p>{{ comment.text|linebreaks }}</p>
+      <div class="date">
+        {{ comment.created_date }}
+        {% if not comment.approved_comment %}
+          <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  {% empty %}
+    <div class='comment'>
+      <p>No comments here yet :(</p>
+    </div>
+  {% endfor %}
 {% endblock %}
