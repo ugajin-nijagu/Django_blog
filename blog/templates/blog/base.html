@@ -18,6 +18,11 @@
         <a href="/">Django Blog</a>
       </h1>
     </div>
+      {% if user.is_authenticated %}
+        <p class="top-menu" style='color: #0094ff'><small>{{ user.username }}: (<a href="{% url 'django.contrib.auth.views.logout' %}?next=/"> Log out </a>)</small></p>
+      {% else %}
+        <p class="top-menu" style='color: #0094ff'><small>Welcome:  (<a href="{% url 'django.contrib.auth.views.login' %}"> Log in </a>)</small></p>
+      {% endif %}
     <div class="content container">
       <div class="row">
         <div class="col-md-8">
